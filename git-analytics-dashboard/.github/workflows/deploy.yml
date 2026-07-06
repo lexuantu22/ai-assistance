@@ -1,0 +1,30 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          script: |
+            # Navigate to the application directory (update this path to where your app lives on VPS)
+            cd /opt/git-analytics-dashboard
+            
+            # Pull latest changes from the main branch
+            git pull origin main
+            
+            # Restart the docker containers with the new build
+            # The --build flag ensures the new frontend/backend code is rebuilt into the containers
+            # The -d flag runs them in the background
+            docker-compose up -d --build
+            
+            # Optional: Clean up dangling images to save disk space
+            docker image prune -f

@@ -1,0 +1,37 @@
+# Core
+fastapi>=0.115.0
+uvicorn[standard]>=0.34.0
+sqlalchemy[asyncio]>=2.0.36
+asyncpg>=0.30.0
+alembic>=1.14.0
+pydantic>=2.10.0
+pydantic-settings>=2.7.0
+
+# Git Processing
+pydriller>=2.6
+gitpython>=3.1.43
+
+# Authentication
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+
+# Utilities
+python-dotenv>=1.0.1
+httpx>=0.28.0
+python-multipart>=0.0.18
+
+# Export
+openpyxl>=3.1.5
+reportlab>=4.2.0
+
+# Logging
+loguru>=0.7.3
+
+# Sync DB driver (for background threads)
+psycopg2-binary>=2.9.9
+
+# Testing
+pytest>=8.3.0
+pytest-asyncio>=0.24.0
+pytest-cov>=6.0.0
+factory-boy>=3.3.1
