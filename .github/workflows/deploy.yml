@@ -78,6 +78,9 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           password: ${{ secrets.VPS_PASSWORD }}
           script: |
+            # Authenticate Docker on VPS with GitHub Container Registry
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            
             cd /opt/ai-assistance
             docker system prune -f
             docker-compose pull api
