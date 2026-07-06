@@ -21,9 +21,7 @@ services:
 
   # ─── FastAPI Backend ────────────────────────────
   api:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    image: ghcr.io/lexuantu22/ai-assistance-api:latest
     restart: unless-stopped
     env_file:
       - .env
