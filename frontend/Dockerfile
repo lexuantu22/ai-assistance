@@ -1,21 +1,8 @@
-# Stage 1: Build the React application
-FROM node:20-alpine AS builder
-
-WORKDIR /app
-
-# Install dependencies
-COPY package*.json ./
-RUN npm install
-
-# Build the app
-COPY . .
-RUN npm run build
-
-# Stage 2: Serve with Nginx
+# Use Nginx directly
 FROM nginx:alpine
 
-# Copy built assets from builder
-COPY --from=builder /app/dist /usr/share/nginx/html
+# Copy built assets from local build (via GH actions)
+COPY dist /usr/share/nginx/html
 
 # Copy custom nginx config
 COPY nginx.conf /etc/nginx/conf.d/default.conf
