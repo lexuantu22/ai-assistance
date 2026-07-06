@@ -28,6 +28,12 @@ jobs:
             # Pull latest changes from the main branch
             git pull origin main
             
+            # Ensure .env file exists
+            if [ ! -f "/opt/ai-assistance/.env" ]; then
+              echo "Creating .env from .env.example..."
+              cp /opt/ai-assistance/.env.example /opt/ai-assistance/.env
+            fi
+            
             # Restart the docker containers with the new build
             # The --build flag ensures the new frontend/backend code is rebuilt into the containers
             # The -d flag runs them in the background
