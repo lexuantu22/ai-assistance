@@ -34,10 +34,10 @@ jobs:
               cp /opt/ai-assistance/.env.example /opt/ai-assistance/.env
             fi
             
+            # Optional: Clean up dangling images to save disk space before building to prevent "no space left on device"
+            docker system prune -f
+            
             # Restart the docker containers with the new build
             # The --build flag ensures the new frontend/backend code is rebuilt into the containers
             # The -d flag runs them in the background
             docker-compose up -d --build
-            
-            # Optional: Clean up dangling images to save disk space
-            docker image prune -f
