@@ -28,6 +28,7 @@ jobs:
           context: ./backend
           push: true
           tags: ghcr.io/${{ github.repository }}-api:latest
+          provenance: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
