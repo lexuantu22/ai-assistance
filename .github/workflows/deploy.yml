@@ -15,8 +15,15 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           password: ${{ secrets.VPS_PASSWORD }}
           script: |
-            # Navigate to the application directory (update this path to where your app lives on VPS)
-            cd /opt/git-analytics-dashboard
+            # Check if directory exists, if not clone it
+            if [ ! -d "/opt/ai-assistance" ]; then
+              echo "Directory does not exist. Cloning repository..."
+              mkdir -p /opt/ai-assistance
+              git clone https://github.com/lexuantu22/ai-assistance.git /opt/ai-assistance
+            fi
+            
+            # Navigate to the application directory
+            cd /opt/ai-assistance
             
             # Pull latest changes from the main branch
             git pull origin main
