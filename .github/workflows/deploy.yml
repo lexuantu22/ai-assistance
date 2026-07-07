@@ -87,3 +87,10 @@ jobs:
             docker system prune -a -f
             docker-compose pull api
             docker-compose up -d --build
+            
+            # Wait a few seconds for the API to try to start
+            sleep 5
+            
+            # Print the logs of the API container to help debug the 502 Bad Gateway error
+            echo "--- API CONTAINER LOGS ---"
+            docker-compose logs --tail=100 api
