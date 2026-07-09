@@ -16,7 +16,7 @@ const { Option } = Select;
 const Reports = () => {
   const navigate = useNavigate();
   
-  const [dateRange, setDateRange] = useState([dayjs().subtract(7, 'day'), dayjs()]);
+  const [dateRange, setDateRange] = useState([dayjs().subtract(1, 'month'), dayjs()]);
   const [selectedProjects, setSelectedProjects] = useState([]);
   
   const [projectsList, setProjectsList] = useState([]);

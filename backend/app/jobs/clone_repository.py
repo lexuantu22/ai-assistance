@@ -87,12 +87,17 @@ def clone_repository(repository_id: str) -> None:
         repository.status = ProjectStatus.PARSING
         session.commit()
 
-        # Parse commits directly (same thread)
+        # Parse commits in the background to free up the clone thread
         from app.jobs.parse_commits import parse_commits
-        parse_commits(repository_id)
+        from app.core.background import run_in_background
+        logger.info(f"🚀 Triggering background parse for {repository_id}")
+        run_in_background(parse_commits, repository_id)
 
     except Exception as exc:
-        logger.error(f"Clone failed for {repository_id}: {exc}")
+        import git
+        if isinstance(exc, git.exc.GitCommandError):
+            logger.error(f"Git Clone failed with stderr: {exc.stderr}")
+        logger.exception(f"Clone failed for {repository_id}: {exc}")
         try:
             repository = session.query(Repository).filter(
                 Repository.id == uuid.UUID(repository_id)
@@ -142,10 +147,15 @@ def sync_repository(repository_id: str) -> None:
         session.commit()
 
         from app.jobs.parse_commits import parse_commits
-        parse_commits(repository_id)
+        from app.core.background import run_in_background
+        logger.info(f"🚀 Triggering background parse (sync) for {repository_id}")
+        run_in_background(parse_commits, repository_id, True)
 
     except Exception as exc:
-        logger.error(f"Sync failed for {repository_id}: {exc}")
+        import git
+        if isinstance(exc, git.exc.GitCommandError):
+            logger.error(f"Git Sync failed with stderr: {exc.stderr}")
+        logger.exception(f"Sync failed for {repository_id}: {exc}")
         try:
             repository = session.query(Repository).filter(
                 Repository.id == uuid.UUID(repository_id)

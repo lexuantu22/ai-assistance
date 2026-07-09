@@ -61,7 +61,7 @@ def parse_commits(repository_id: str, sync_mode: bool = False) -> None:
         )
 
         commit_count = 0
-        batch_size = 100
+        batch_size = 10
 
         for parsed_commit in parser.parse_commits(since=since):
             # Check if commit already exists
@@ -79,12 +79,19 @@ def parse_commits(repository_id: str, sync_mode: bool = False) -> None:
             ).first()
 
             if not developer:
-                developer = Developer(
-                    name=parsed_commit.author_name,
-                    email=parsed_commit.author_email,
-                )
-                session.add(developer)
-                session.flush()
+                try:
+                    with session.begin_nested():
+                        developer = Developer(
+                            name=parsed_commit.author_name,
+                            email=parsed_commit.author_email,
+                        )
+                        session.add(developer)
+                        session.flush()
+                except Exception:
+                    # Concurrency collision: Another thread inserted it first
+                    developer = session.query(Developer).filter(
+                        Developer.email == parsed_commit.author_email
+                    ).first()
 
             # Create commit
             commit = Commit(
@@ -119,7 +126,7 @@ def parse_commits(repository_id: str, sync_mode: bool = False) -> None:
 
             if commit_count % batch_size == 0:
                 session.commit()
-                logger.info(f"Processed {commit_count} commits...")
+                logger.info(f"⏳ [Parse Progress] Processed {commit_count} commits...")
 
         session.commit()
         logger.info(f"Total commits parsed: {commit_count}")

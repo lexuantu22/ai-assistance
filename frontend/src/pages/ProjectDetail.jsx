@@ -52,7 +52,7 @@ const ProjectDetail = () => {
   const [folders, setFolders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
-  const [dateRange, setDateRange] = useState([dayjs().subtract(7, 'day'), dayjs()]);
+  const [dateRange, setDateRange] = useState([dayjs().subtract(1, 'month'), dayjs()]);
 
   const [repoModalOpen, setRepoModalOpen] = useState(false);
   const [creatingRepo, setCreatingRepo] = useState(false);

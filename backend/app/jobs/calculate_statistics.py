@@ -115,11 +115,11 @@ def calculate_statistics(project_id: str) -> None:
                 developer_id=row.developer_id,
                 project_id=pid,
                 commit_count=row.commit_count,
-                total_added_lines=row.total_added,
-                total_deleted_lines=row.total_deleted,
+                total_added=row.total_added,
+                total_deleted=row.total_deleted,
                 total_files_changed=row.total_files,
-                first_commit_date=row.first_commit,
-                last_commit_date=row.last_commit,
+                first_commit=row.first_commit,
+                last_commit=row.last_commit,
             ))
 
         # Update all CALCULATING repositories in this project to COMPLETED
