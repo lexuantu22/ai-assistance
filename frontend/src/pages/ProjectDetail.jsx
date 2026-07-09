@@ -325,8 +325,8 @@ const ProjectDetail = () => {
     { title: 'Developer', dataIndex: 'name', key: 'name', render: (n) => <b>{n}</b> },
     { title: 'Email', dataIndex: 'email', key: 'email', render: (e) => <span style={{ opacity: 0.7 }}>{e}</span> },
     { title: 'Commits', dataIndex: 'commit_count', key: 'commits', sorter: (a, b) => a.commit_count - b.commit_count, defaultSortOrder: 'descend' },
-    { title: 'Lines Added', dataIndex: 'total_added', key: 'added', render: (v) => <Text type="success">+{v?.toLocaleString()}</Text> },
-    { title: 'Lines Deleted', dataIndex: 'total_deleted', key: 'deleted', render: (v) => <Text type="danger">-{v?.toLocaleString()}</Text> },
+    { title: 'Lines Added', dataIndex: 'total_added', key: 'added', sorter: (a, b) => (a.total_added || 0) - (b.total_added || 0), render: (v) => <Text type="success">+{v?.toLocaleString()}</Text> },
+    { title: 'Lines Deleted', dataIndex: 'total_deleted', key: 'deleted', sorter: (a, b) => (a.total_deleted || 0) - (b.total_deleted || 0), render: (v) => <Text type="danger">-{v?.toLocaleString()}</Text> },
     {
       title: 'Include in Stats',
       key: 'action',

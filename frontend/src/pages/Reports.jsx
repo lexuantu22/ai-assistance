@@ -84,16 +84,16 @@ const Reports = () => {
       )
     },
     { title: 'Total Commits', dataIndex: 'commit_count', key: 'commits', sorter: (a, b) => a.commit_count - b.commit_count, defaultSortOrder: 'descend' },
-    { title: 'Lines Added', dataIndex: 'total_added', key: 'added', render: (v) => <Text type="success">+{v?.toLocaleString()}</Text> },
-    { title: 'Lines Deleted', dataIndex: 'total_deleted', key: 'deleted', render: (v) => <Text type="danger">-{v?.toLocaleString()}</Text> },
+    { title: 'Lines Added', dataIndex: 'total_added', key: 'added', sorter: (a, b) => (a.total_added || 0) - (b.total_added || 0), render: (v) => <Text type="success">+{v?.toLocaleString()}</Text> },
+    { title: 'Lines Deleted', dataIndex: 'total_deleted', key: 'deleted', sorter: (a, b) => (a.total_deleted || 0) - (b.total_deleted || 0), render: (v) => <Text type="danger">-{v?.toLocaleString()}</Text> },
   ];
 
   const projColumns = [
     { title: 'Project Name', dataIndex: 'project_name', key: 'name', render: (n) => <Text strong>{n}</Text> },
     { title: 'Total Commits', dataIndex: 'total_commits', key: 'commits', sorter: (a, b) => a.total_commits - b.total_commits, defaultSortOrder: 'descend' },
     { title: 'Active Developers', dataIndex: 'active_developers', key: 'devs' },
-    { title: 'Lines Added', dataIndex: 'total_added', key: 'added', render: (v) => <Text type="success">+{v?.toLocaleString()}</Text> },
-    { title: 'Lines Deleted', dataIndex: 'total_deleted', key: 'deleted', render: (v) => <Text type="danger">-{v?.toLocaleString()}</Text> },
+    { title: 'Lines Added', dataIndex: 'total_added', key: 'added', sorter: (a, b) => (a.total_added || 0) - (b.total_added || 0), render: (v) => <Text type="success">+{v?.toLocaleString()}</Text> },
+    { title: 'Lines Deleted', dataIndex: 'total_deleted', key: 'deleted', sorter: (a, b) => (a.total_deleted || 0) - (b.total_deleted || 0), render: (v) => <Text type="danger">-{v?.toLocaleString()}</Text> },
   ];
 
   const topDevs = [...developers].slice(0, 15).reverse();

@@ -71,9 +71,9 @@ def clone_repository(repository_id: str) -> None:
 
         logger.info(f"Cloning {repository.git_url} -> {clone_dir}")
         if repository.default_branch and repository.default_branch != "main":
-            Repo.clone_from(auth_url, clone_dir, branch=repository.default_branch)
+            Repo.clone_from(auth_url, clone_dir, branch=repository.default_branch, env={"GIT_TERMINAL_PROMPT": "0"})
         else:
-            Repo.clone_from(auth_url, clone_dir)
+            Repo.clone_from(auth_url, clone_dir, env={"GIT_TERMINAL_PROMPT": "0"})
         logger.info(f"Clone completed: {repository.git_url}")
 
         # Detect default branch if not specified
@@ -140,8 +140,9 @@ def sync_repository(repository_id: str) -> None:
         origin.set_url(auth_url)
 
         logger.info(f"Fetching updates for {repository.git_url}")
-        origin.fetch()
-        repo.git.pull('origin', repository.default_branch)
+        with repo.git.custom_environment(GIT_TERMINAL_PROMPT="0"):
+            origin.fetch()
+            repo.git.pull('origin', repository.default_branch)
 
         repository.status = ProjectStatus.PARSING
         session.commit()

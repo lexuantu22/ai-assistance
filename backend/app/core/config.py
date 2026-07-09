@@ -1,6 +1,7 @@
 """
 Application Configuration using Pydantic Settings
 """
+import os
 from typing import List
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -10,9 +11,10 @@ class Settings(BaseSettings):
     """Application settings loaded from environment variables."""
 
     model_config = SettingsConfigDict(
-        env_file="../.env",
+        env_file=os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))), ".env"),
         env_file_encoding="utf-8",
         case_sensitive=True,
+        extra="ignore",
     )
 
     # App
@@ -21,7 +23,7 @@ class Settings(BaseSettings):
     DEBUG: bool = True
 
     # Database
-    DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/git_analytics"
+    DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@db:5432/git_analytics"
 
     # JWT
     JWT_SECRET_KEY: str = "super-secret-key-change-in-production"
